@@ -1,6 +1,13 @@
-const { PORT } = require('./common/config');
-const app = require('./app');
+const app = require("./app");
+const {MONGO_CONNECTION_STRING, PORT} = require("./common/config");
+const mongoose = require("mongoose");
 
-app.listen(PORT, () =>
-  console.log(`App is running on http://localhost:${PORT}`)
-);
+async function startServer() {
+    await mongoose.connect(MONGO_CONNECTION_STRING, {useNewUrlParser: true, useUnifiedTopology: true});
+
+    app.listen(PORT, function () {
+        console.log('Сервер ожидает подключения...')
+    })
+}
+
+startServer();

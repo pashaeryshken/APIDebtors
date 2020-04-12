@@ -1,24 +1,34 @@
-const express = require('express');
-const swaggerUI = require('swagger-ui-express');
-const path = require('path');
-const YAML = require('yamljs');
-const userRouter = require('./resources/users/user.router');
-
+const express = require("express");
+const cors = require("cors")
+const userRouter = require("./routes/userRouter")
+const bodyParser = require("body-parser")
+const debtorsRouter = require("./routes/debtorsRouter")
+const peopleRouter = require("./routes/peopleRouter")
+const fileUpload = require("express-fileupload")
 const app = express();
-const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
 
-app.use(express.json());
+app.use(fileUpload({
+    createParentPath: true
+}))
+app.use(express.static('uploads'));
+app.use(express.static('uploads/:id/debtors'));
+app.use(cors())
+app.use(bodyParser.json());
 
-app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 
-app.use('/', (req, res, next) => {
-  if (req.originalUrl === '/') {
-    res.send('Service is running!');
-    return;
-  }
-  next();
-});
+app.use('/users', userRouter)
+app.use("/debtors", debtorsRouter)
+app.use("/people", peopleRouter)
 
-app.use('/users', userRouter);
+app.use(function (req, res) {
+    res.status(404).send("Nots")
+})
 
 module.exports = app;
+
+
+
+
+
+
+
