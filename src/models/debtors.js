@@ -6,8 +6,8 @@ const debtorsSchema = new Schema({
     people: {type: mongoose.Schema.Types.ObjectId, ref:'People'},
     isI: Boolean,
     amount: Number,
-    date: {type: Date, default: Date.now()},
-    dateOfPayment: {type: Date, default: Date.now()},
+    dateStart: {type: Date, default: Date.now()},
+    dateEnd: {type: Date, default: Date.now()},
     currency: {type: String, default: "BYN"},
     status: {type:Number, default: 1},
     history: [{

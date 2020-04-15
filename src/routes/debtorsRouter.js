@@ -7,8 +7,6 @@ const {validationResult} = require("express-validator/check");
 
 debtorsRouter.post("/create", auth, [/*...*/], async (request, response) => {
     try {
-
-
         const debtors = await debtorsController.createDebtors(request.body, request.user)
 
         response.status(200).json(debtors)
@@ -40,7 +38,16 @@ debtorsRouter.put("/", auth, [
         });
     }
     try {
-        const debtor = await debtorsController.updateDebtors(request.body)
+        const debtor = await debtorsController.updateDebtors(request.body);
+        response.status(200).json(debtor)
+    } catch (err) {
+        response.status(500).json(err)
+    }
+});
+
+debtorsRouter.put("/status", auth, [], async (request, response) => {
+    try {
+        const debtor = await debtorsController.updateDebtorStatus(request.body);
         response.status(200).json(debtor)
     } catch (err) {
         response.status(500).json(err)
@@ -58,7 +65,6 @@ debtorsRouter.get("/:id", auth, async (request, response) => {
 
 debtorsRouter.delete("/:id", auth, async (request, response) => {
     try {
-        console.log(request);
         await debtorsController.removeDebtors(request.params.id);
         response.status(200).json({message: 'SUCCESS'})
 
@@ -67,4 +73,4 @@ debtorsRouter.delete("/:id", auth, async (request, response) => {
     }
 });
 
-module.exports = debtorsRouter
+module.exports = debtorsRouter;

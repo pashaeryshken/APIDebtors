@@ -38,7 +38,6 @@ peopleRouter.put('/', auth, [], async (request, response) => {
 peopleRouter.get('/', auth, [], async (request, response) => {
    try {
        const peoples = await peopleController.getPeopleAll(request.user.id);
-       console.log(peoples)
        response.status(200).json(peoples)
    } catch (e) {
        response.status(500).json(e)

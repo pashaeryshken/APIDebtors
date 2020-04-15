@@ -15,7 +15,11 @@ exports.createPeople = async (body, user) => {
     } else {
         body.avatar = `http://localhost:${PORT}/${user.id}/debtors/${body.avatar}`
     }
-    const people = new People({...body, userId: user.id});
+    const {name, email, phone, avatar, address} = {...body};
+    let tNumber = {...phone};
+    tNumber = `${tNumber.codePhone} ${tNumber.tNumber}`;
+    const newPeople = {name, email, avatar, address, tNumber};
+    const people = new People({...newPeople, userId: user.id});
     await people.save();
     return people
 };
@@ -29,7 +33,6 @@ exports.getPeopleAll = async (id) => {
 };
 
 exports.updatePeople = async function (body) {
-
     if (!body.id) throw {message: 'DEBTOR_NOT_FOUND'};
 
     try {
